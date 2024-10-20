@@ -2,8 +2,8 @@ import { useState } from 'react'
 import {Box} from '@chakra-ui/react'
 import './App.css'
 import { Route, Routes } from'react-router-dom'
-import Homepage from './components/Homepage'
-import Chatpage from './components/Chatpage'
+import Homepage from './pages/Homepage'
+import Chatpage from './pages/Chatpage'
 
 function App() {
   const [count, setCount] = useState(0)
