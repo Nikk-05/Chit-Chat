@@ -4,10 +4,12 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Button
+    Button,
+    useToast
 } from '@chakra-ui/react'
 
 const SignUp = () => {
+    const toast = useToast()
     const [passwordValid, setPasswordValid] = useState(true);
     const [signUpData, setSignUpData] = useState({
         name: '',
@@ -33,7 +35,12 @@ const SignUp = () => {
     const submitHandler = (e) => {
         e.preventDefault()
         if (signUpData.password !== signUpData.confirmPassword) {
-            return;
+            toast({
+                title: 'Password and Confirm Password are not the same',
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+              })
         }
         console.log(signUpData)
         // clear the state data
@@ -45,7 +52,7 @@ const SignUp = () => {
             profilePicture: '',
         })
     }
-    
+
     return (
         <VStack spacing={2}>
             {/* Sign Up form */}
@@ -99,7 +106,7 @@ const SignUp = () => {
                     onChange={handleChange}
                 />
             </FormControl>
-            <Button onClick={submitHandler} w='100%' bg='teal.200' mt='2' _hover={{ bg: 'blue', color: 'white' }}>Sign Up</Button>
+            <Button onClick={submitHandler}  w='100%' bg='blue.500' color = 'white' mt='2' _hover={{ bg: 'blue.700'}}>Sign Up</Button>
         </VStack>
     )
 }

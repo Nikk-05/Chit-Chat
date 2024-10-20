@@ -5,9 +5,11 @@ import {
     FormLabel,
     Input,
     Button,
-    Link,
-    Flex
+    Flex,
+    Link as ChakraLink
 } from '@chakra-ui/react'
+import { Link as ReactRouterLink } from 'react-router-dom'
+
 
 function Login() {
     const [logInData, setLogInData] = useState({
@@ -35,14 +37,14 @@ function Login() {
             <FormControl isRequired>
                 <Flex d='flex' flexDirection='row' alignItems='center' justifyContent='space-between'>
                     <FormLabel>Password</FormLabel>
-                    <Link to="#" text='sm' color='blue'>
+                    <ChakraLink as={ReactRouterLink} to="/reset-password" text='sm' color='blue' >
                         Forgot password?
-                    </Link>
+                    </ChakraLink>
                 </Flex>
                 <Input type="password" name="password" value={logInData.password} placeholder='Enter Your Password' onChange={handleChange} />
             </FormControl>
 
-            <Button onClick={handleSubmit} w='100%' bg='teal.200' mt='2' _hover={{ bg: 'blue', color: 'white' }}>Log In</Button>
+            <Button onClick={handleSubmit}  w='100%' bg='blue.500' color = 'white' mt='2' _hover={{ bg: 'blue.700'}}>Log In</Button>
 
         </Stack>
     )

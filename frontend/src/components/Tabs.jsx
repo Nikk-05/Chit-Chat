@@ -3,7 +3,8 @@ import {
     TabList,
     TabPanels,
     Tab,
-    TabPanel
+    TabPanel,
+    Link
 } from '@chakra-ui/react'
 import Login from './Login.jsx';
 import SignUp from './SignUp.jsx'

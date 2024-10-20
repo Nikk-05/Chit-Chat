@@ -11,7 +11,7 @@ import Tabs from '../components/Tabs.jsx'
 
 function Homepage() {
     return (
-        <Container maxW='xl' centerContent>
+        <Container d='flex' justifyContent='center' maxW='xl' centerContent>
             <Box
                 d='flex'
                 justifyContent='center'
@@ -27,7 +27,6 @@ function Homepage() {
             <Box bgColor='white' w='100%' borderRadius='lg' p='4' borderWidth='1px'>
                 <Tabs/>
             </Box>
-
         </Container>
     )
 }
