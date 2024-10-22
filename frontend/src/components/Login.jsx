@@ -8,7 +8,8 @@ import {
     Button,
     Link as ChakraLink,
     FormErrorMessage,
-    useToast
+    useToast,
+    Spinner
 } from '@chakra-ui/react'
 import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import { Formik, Form, Field } from 'formik';
@@ -16,7 +17,7 @@ import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
-    newPassword: Yup.string().required('Password is required')
+    password: Yup.string().required('Password is required')
 });
 
 const LoginFormData = () => {
@@ -34,7 +35,10 @@ const LoginFormData = () => {
                     duration: 4000,
                     isClosable: true,
                 })
-                navigate('/chat')
+                {<Spinner />}
+                setTimeout(() => {
+                    navigate('/chat'), 5000
+                })
             }}
         >
             {({ errors, touched, handleSubmit }) => (
@@ -44,7 +48,7 @@ const LoginFormData = () => {
                             {({ field }) => (
                                 <FormControl isInvalid={errors.email && touched.email} isRequired >
                                     <FormLabel>Email</FormLabel>
-                                    <Input {...field} type="email" placeholder='Enter your email' borderWidth ='1px' borderColor ='tale.200' />
+                                    <Input {...field} type="email" placeholder='Enter your email' borderWidth='1px' borderColor='tale.200' />
                                     {errors.email && touched.email ? <FormErrorMessage>{errors.email}</FormErrorMessage> : null}
                                 </FormControl>
                             )}
@@ -58,7 +62,7 @@ const LoginFormData = () => {
                                             Forgot password?
                                         </ChakraLink>
                                     </Flex>
-                                    <Input {...field} type="password" placeholder='Enter your password' borderWidth ='1px' borderColor ='tale.200'/>
+                                    <Input {...field} type="password" placeholder='Enter your password' borderWidth='1px' borderColor='tale.200' />
                                     {errors.password && touched.password ? <FormErrorMessage>{errors.password}</FormErrorMessage> : null}
                                 </FormControl>
                             )}
@@ -67,7 +71,7 @@ const LoginFormData = () => {
                     </Stack>
                 </Form>
             )}
-        </Formik>
+        </Formik >
     )
 }
 function Login() {

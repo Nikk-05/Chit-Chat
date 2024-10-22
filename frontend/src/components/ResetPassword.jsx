@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom'
 import {
     Stack,
     Box,
@@ -10,7 +10,8 @@ import {
     Container,
     Button,
     useToast,
-    FormErrorMessage
+    FormErrorMessage,
+    Link as ChakraLink
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
@@ -39,17 +40,22 @@ const PasswordResetForm = () => {
                     duration: 6000,
                     isClosable: true,
                 })
-                navigate('/')
+                setFieldValue({
+                    email: '',
+                    password: '',
+                    confirmPassword: ''
+                })
+                navigate('/login')
             }}
         >
-            {({ errors, touched, handleSubmit }) => (
+            {({ errors, touched, handleSubmit, setFieldValue }) => (
                 <Form onSubmit={handleSubmit}>
                     <Stack spacing={2}>
                         <Field name="email">
                             {({ field }) => (
                                 <FormControl isInvalid={errors.email && touched.email} isRequired>
                                     <FormLabel>Email</FormLabel>
-                                    <Input {...field} type="email" placeholder="Enter your email"  borderWidth ='1px' borderColor ='tale.200' />
+                                    <Input {...field} type="email" placeholder="Enter your email" borderWidth='1px' borderColor='tale.200' />
                                     {errors.email && touched.email ? <FormErrorMessage>{errors.email}</FormErrorMessage> : null}
                                 </FormControl>
                             )}
@@ -59,7 +65,7 @@ const PasswordResetForm = () => {
                             {({ field }) => (
                                 <FormControl isInvalid={errors.newPassword && touched.newPassword} isRequired mt={4}>
                                     <FormLabel>New Password</FormLabel>
-                                    <Input {...field} type="password" placeholder="Enter new password" borderWidth ='1px' borderColor ='tale.200' />
+                                    <Input {...field} type="password" placeholder="Enter new password" borderWidth='1px' borderColor='tale.200' />
                                     {errors.newPassword && touched.newPassword ? <FormErrorMessage>{errors.newPassword}</FormErrorMessage> : null}
                                 </FormControl>
                             )}
@@ -69,7 +75,7 @@ const PasswordResetForm = () => {
                             {({ field }) => (
                                 <FormControl isInvalid={errors.confirmPassword && touched.confirmPassword} isRequired mt={4}>
                                     <FormLabel>Confirm Password</FormLabel>
-                                    <Input {...field} type="password" placeholder="Confirm your password"  borderWidth ='1px' borderColor ='tale.200' />
+                                    <Input {...field} type="password" placeholder="Confirm your password" borderWidth='1px' borderColor='tale.200' />
                                     {errors.confirmPassword && touched.confirmPassword ? <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage> : null}
                                 </FormControl>
                             )}
@@ -78,6 +84,7 @@ const PasswordResetForm = () => {
                         <Button type="submit" w='100%' bg='blue.500' color='white' mt='2' _hover={{ bg: 'blue.700' }}>
                             Reset Password
                         </Button>
+                        <Text mt='2' textAlign='center'>Remember your password?  <ChakraLink as={ReactRouterLink} to="/login" text='sm' color='blue' >Sign In</ChakraLink></Text>
                     </Stack>
                 </Form>
             )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
     Stack,
     FormControl,
@@ -36,6 +36,7 @@ const handleFileUpload = (event, setFieldValue) => {
 const SignUpFormData = () => {
     const toast = useToast()
     const navigate = useNavigate()
+    const fileInputRef = useRef(null)
     return (
         <Formik
             initialValues={
@@ -47,7 +48,7 @@ const SignUpFormData = () => {
                     profilePicture: ''
                 }}
             validationSchema={validationSchema}
-            onSubmit={(data) => {
+            onSubmit={(data, { resetForm }) => {
                 console.log(data)
                 toast({
                     title: 'Sign Up Successful',
@@ -55,7 +56,21 @@ const SignUpFormData = () => {
                     duration: 6000,
                     isClosable: true,
                 })
-                navigate('/login')
+                // navigate to login page after successful sign up
+                setTimeout(() => {
+                    navigate('/login'), 100
+                })
+
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = ''
+                }
+                // revome current values
+                resetForm({
+                    name: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: ''
+                });
             }}
         >
             {({ errors, touched, handleSubmit, setFieldValue }) => (
@@ -105,12 +120,13 @@ const SignUpFormData = () => {
                             {({ field }) => (
                                 <FormControl isRequired>
                                     <FormLabel>Profile Picture</FormLabel>
-                                    <Input type="file" accept="image/*" onChange={(event) => handleFileUpload(event, setFieldValue)}
+                                    <Input type="file" accept="image/*" onChange={(event) => handleFileUpload(event, setFieldValue)} ref={fileInputRef}
                                         placeholder='Upload profile picture' borderWidth='1px' borderColor='tale.200' pt='4px' left='2px' />
                                     {errors.profilePicture && touched.profilePicture ? <FormErrorMessage>{errors.profilePicture}</FormErrorMessage> : null}
                                 </FormControl>
                             )}
                         </Field>
+
                         <Button type='submit' w='100%' bg='blue.500' color='white' mt='2' _hover={{ bg: 'blue.700' }}>Sign Up</Button>
                     </Stack>
                 </Form>
