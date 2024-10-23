@@ -39,8 +39,8 @@ function Homepage() {
             <Box bgColor='white' w='100%' borderRadius='lg' p='4' borderWidth='1px'>
                 <Tabs index={currentTab} onChange={handleTabChange} variant='soft-rounded'>
                     <TabList mb='0.5em'>
-                        <Tab w='50%' _selected={{ color: 'black', bg: 'teal.100' }}>Login</Tab>
-                        <Tab w='50%' _selected={{ color: 'black', bg: 'teal.100' }}>SignUp</Tab>
+                        <Tab w='50%' _selected={{ color: 'black', bg: 'teal.100', borderWidth:'3px', borderColor:'teal.300' }}>Login</Tab>
+                        <Tab w='50%' _selected={{ color: 'black', bg: 'teal.100', borderWidth:'3px', borderColor:'teal.300' }}>SignUp</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel _selected={{ color: 'black', bg: 'teal.300' }}>

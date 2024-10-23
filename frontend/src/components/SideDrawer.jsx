@@ -1,7 +1,14 @@
-import { Flex, Tooltip, Text, Button, Menu, MenuItem, Box } from '@chakra-ui/react'
+import { Flex, Tooltip, Text, Button, Menu, MenuItem, MenuButton, Box, Avatar, AvatarBadge, MenuList, MenuDivider } from '@chakra-ui/react'
+import { ChevronDownIcon, BellIcon } from '@chakra-ui/icons'
+import ProfileModal from './ProfileModal.jsx'
 import React from 'react'
 
 const SideDrawer = () => {
+    const  user = {
+        name: 'Oshigaki Kisame',
+        pic: 'https://bit.ly/kent-c-dodds',
+        email: 'abcd@gmail.com',
+    }
     return (
         <>
             <Flex justifyContent='space-between' alignItems='center' bg='white' w='100%' p='5px 10px 5px 10px' borderWidth='5px'>
@@ -12,18 +19,28 @@ const SideDrawer = () => {
                     </Button>
                 </Tooltip>
                 <Text fontSize='2xl' fontFamily='work-sans'>Chit-Chat</Text>
-                <Box>
+                <Flex>
                     <Menu>
-                        <MenuItem p='1'>
-                            <i className="fa-solid fa-bell"></i>
-                        </MenuItem>
-                        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                            Actions
+                        <MenuButton>
+                            <BellIcon fontSize='2xl' m='1' />
                         </MenuButton>
-                    </Menu>
-                </Box>
+                        <MenuButton as={Button} rightIcon={<ChevronDownIcon />} bg='transparent'>
+                            <Avatar size='sm' name='Oshigaki Kisame' src='https://bit.ly/kent-c-dodds' >
+                                <AvatarBadge boxSize='1rem' bg='green.500' />
+                            </Avatar>
+                        </MenuButton>
+                        <MenuList>
+                                <ProfileModal user = {user}>
+                                    <MenuItem>My Profile</MenuItem>
+                                </ProfileModal>
+                                <MenuDivider />
+                                <MenuItem>Log Out</MenuItem>
+                        </MenuList>
 
-            </Flex>
+                    </Menu>
+                </Flex>
+
+            </Flex >
         </>
     )
 }
