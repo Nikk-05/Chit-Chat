@@ -1,23 +1,34 @@
 import { Flex, Tooltip, Text, Button, Menu, MenuItem, MenuButton, Box, Avatar, AvatarBadge, MenuList, MenuDivider } from '@chakra-ui/react'
 import { ChevronDownIcon, BellIcon } from '@chakra-ui/icons'
 import ProfileModal from './ProfileModal.jsx'
-import React from 'react'
+import DrawerBox from './DrawerBox.jsx'
+import React,{useState} from 'react'
 
-const SideDrawer = () => {
-    const  user = {
+const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const user = {
         name: 'Oshigaki Kisame',
         pic: 'https://bit.ly/kent-c-dodds',
         email: 'abcd@gmail.com',
     }
+    const toggleDrawer = () =>{
+        setIsOpen(!isOpen)
+    }
+
+    const closeDrawer = () =>{
+        setIsOpen(false)
+    }
+
     return (
         <>
             <Flex justifyContent='space-between' alignItems='center' bg='white' w='100%' p='5px 10px 5px 10px' borderWidth='5px'>
-                <Tooltip label='Search User to Chat' hasArrow placement='bottom-end'>
-                    <Button variant='ghost'>
-                        <i className="fa-solid fa-magnifying-glass"></i>
-                        <Text d={{ base: "none", md: "flex" }} px="4">Search User</Text>
-                    </Button>
+                <Tooltip label='Search User' hasArrow placement='bottom-end'>
+                        <Button variant='ghost' onClick={toggleDrawer}>
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                            <Text display={{base:"none" , md : "flex" }} px="4">Search User</Text>
+                        </Button>
                 </Tooltip>
+                <DrawerBox isOpen ={isOpen} onClose={closeDrawer}/>
                 <Text fontSize='2xl' fontFamily='work-sans'>Chit-Chat</Text>
                 <Flex>
                     <Menu>
@@ -30,11 +41,11 @@ const SideDrawer = () => {
                             </Avatar>
                         </MenuButton>
                         <MenuList>
-                                <ProfileModal user = {user}>
-                                    <MenuItem>My Profile</MenuItem>
-                                </ProfileModal>
-                                <MenuDivider />
-                                <MenuItem>Log Out</MenuItem>
+                            <ProfileModal user={user}>
+                                <MenuItem>My Profile</MenuItem>
+                            </ProfileModal>
+                            <MenuDivider />
+                            <MenuItem>Log Out</MenuItem>
                         </MenuList>
 
                     </Menu>
@@ -45,4 +56,4 @@ const SideDrawer = () => {
     )
 }
 
-export default SideDrawer
+export default Navbar
