@@ -14,9 +14,10 @@ import {
 
   function DrawerBox({isOpen,onClose}) {
     const [search, setSearch] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleSearch = () => {
-
+      setLoading(true)
     }
     return (
       <>
