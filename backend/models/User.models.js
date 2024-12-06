@@ -44,7 +44,7 @@ userSchema.methods.checkPassword = async function(password){
 
 userSchema.methods.generateAccessToken = async function(){
     return jwt.sign({
-        id: this._id,
+        _id: this._id,
         email: this.email
     },
     process.env.ACCESS_TOKEN,
@@ -53,7 +53,7 @@ userSchema.methods.generateAccessToken = async function(){
 
 userSchema.methods.generateRefreshToken = async function(){
     return jwt.sign({
-        id: this._id
+        _id: this._id
     },
     process.env.REFRESH_TOKEN,
     {expiresIn: process.env.REFRESH_TOKEN_EXPIRY})
