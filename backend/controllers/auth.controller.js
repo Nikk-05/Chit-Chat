@@ -3,6 +3,7 @@ import { APIError } from '../utils/APIError.utils.js';
 import { APIResponse } from '../utils/APIResponse.utils.js';
 import { asyncHandler } from '../utils/asyncHandler.utils.js';
 import generateAccessAndRefreshToken from '../middlewares/generateToken.middleware.js';
+import { uploadDataOnCloud } from '../utils/cloudinary.utils.js';
 
 const signup = asyncHandler(async (req, res, next) => {
     try {
@@ -61,7 +62,7 @@ const login = asyncHandler(async (req, res, next) => {
         console.log()
         res.status(200)
             .cookie("refreshToken", refreshToken, options)
-            .json(new APIResponse(200, { User: loggedInUser,  accessToken: accessToken }, "User Logged in successfully"))
+            .json(new APIResponse(200, { User: loggedInUser, accessToken: accessToken }, "User Logged in successfully"))
     }
     catch (error) {
         next(error)
@@ -69,15 +70,44 @@ const login = asyncHandler(async (req, res, next) => {
 })
 
 const logout = asyncHandler(async (req, res, next) => {
-    try{
+    try {
         const userId = req.user._id;
         await User.findByIdAndUpdate(userId, { refreshToken: null })
         res.clearCookie("refreshToken", { path: "/" })
         return res.status(200).json(new APIResponse(200, {}, "User Logged out successfully"))
     }
-    catch(error){
+    catch (error) {
         next(error)
     }
 })
 
-export { signup, login, logout }
+const updateProfile = asyncHandler(async (req, res, next) => {
+    try {
+        const userId = req.user._id
+        const profileLocalPath = req.file?.path
+        if (!profileLocalPath) {
+            throw new APIError(400, "No profile picture provided")
+        }
+        const profilePicture = await uploadDataOnCloud(profileLocalPath)
+        if (!profilePicture.url) {
+            throw new APIError(500, "Failed to upload profile picture on cloud")
+        }
+        const uploadedProfilePicture = await User.findByIdAndUpdate(
+            { userId: userId },
+            {
+                $set: {
+                    profilePicture: profilePicture.url
+                }
+            },
+            { new: true }).select("-password -refreshToken")
+
+        return res.status(200)
+            .json(new APIResponse(200, uploadedProfilePicture, "Profile picture updated successfully"))
+    }
+    catch (error) {
+        next(error)
+    }
+
+})
+
+export { signup, login, logout, updateProfile }
