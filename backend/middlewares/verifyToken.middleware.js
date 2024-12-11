@@ -9,7 +9,6 @@ const verifyJwt = asyncHandler(async(req, res, next) =>{
             throw new Error("Not an authorized user")
         }
         const decodeJwtToken = jwt.verify(token, process.env.REFRESH_TOKEN)
-        console.log(decodeJwtToken)
         const authorizedUser = await User.findById(decodeJwtToken?._id).select("-password -refreshToken")
         req.user = authorizedUser
         next();
