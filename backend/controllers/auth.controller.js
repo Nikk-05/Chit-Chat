@@ -4,13 +4,6 @@ import { APIResponse } from '../utils/APIResponse.utils.js';
 import { asyncHandler } from '../utils/asyncHandler.utils.js';
 import generateAccessAndRefreshToken from '../middlewares/generateToken.middleware.js';
 import { uploadDataOnCloud } from '../utils/cloudinary.utils.js';
-import { fileURLToPath } from 'url';
-import path from 'path';
-
-// Get __dirname equivalent
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 
 const signup = asyncHandler(async (req, res, next) => {
     try {
@@ -91,9 +84,7 @@ const logout = asyncHandler(async (req, res, next) => {
 const updateProfile = asyncHandler(async (req, res, next) => {
     try {
         const userId = req.user._id
-        console.log(userId)
-        const filePath = req.file?.path // `req.file.path` gives relative path
-        console.log(filePath); 
+        const filePath = req.file?.path // `req.file.path` gives relative path 
         if (!filePath) {
             throw new APIError(400, "No profile picture provided")
         }
