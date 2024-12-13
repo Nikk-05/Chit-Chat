@@ -29,10 +29,12 @@ const getMessage = asyncHandler(async (req, res, next) => {
         const currentUser = req.user.id
         const messages = await Chat.find({
             $or: [
-                { sender: currentUser, receiver: userToChat },
-                { sender: userToChat, receiver: currentUser }
+                { senderId: currentUser, receiverId: userToChat },
+                { senderId: userToChat, receiverId: currentUser }
             ]
         })
+        res.status(200)
+            .json(new APIResponse(200, messages, "Fectched message successfully"))
     }
     catch (error) {
         next(error)
@@ -40,34 +42,39 @@ const getMessage = asyncHandler(async (req, res, next) => {
 })
 
 const sendMessage = asyncHandler(async (req, res, next) => {
-    try{
-        const receiverId = req.params.id
-        const senderId = req.user.id
-        const { message} = req.body
-        const imagelocalPath = req.file.path
-        let sharedImage;
-        if(imagelocalPath){
-            const imageOnCloud = await uploadDataOnCloud(imagelocalPath)
-            if(!imageOnCloud){
-                throw new APIError(400, "Failed to upload chat image on cloud ")
-            }
-            sharedImage = imageOnCloud.url
+    try {
+        const receiver = req.params.id
+        const sender = req.user.id
+        const { message } = req.body
+        let sharedImage = [];
+        if (req.files && req.files.length > 0) {
+            const imageUploadPromises = req.files.map(async (file) => {
+                const result = await uploadDataOnCloud(file.path);
+                if (!result) {
+                    throw new APIError(400, "Failed to upload chat image on cloud");
+                }
+                return result.url; // Ensure you're returning the Cloudinary URL
+            });
+
+            // Wait for all uploads to complete
+            sharedImage = await Promise.all(imageUploadPromises);
         }
 
         const chatting = await Chat.create({
-            sender: senderId,
-            receiver: receiverId,
+            senderId: sender,
+            receiverId: receiver,
             message,
             images: sharedImage
         })
-        if(!chatting){
+        if (!chatting) {
             throw new APIError(500, "Failed to store message on db")
         }
-        await chatting.save().
+        const receiverPerson = await User.findById(receiver).select("-password -refreshToken")
+        // Todo: Adding the functionality to the Socket.io protocol
         res.status(200)
-        .json(new APIResponse(200, chatting, "Message sent successfully"))
+            .json(new APIResponse(200, chatting, `Message sent to ${receiverPerson.fullname}`))
     }
-    catch(error){
+    catch (error) {
         next(error)
     }
 })

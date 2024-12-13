@@ -14,9 +14,9 @@ const chatSchema = new Schema({
     message:{
         type: String,
     },
-    image:{
-        type: String,
-        default: ""
+    images:{
+        type: [String],
+        default: []
     }
 },{timestamps:true})
 
