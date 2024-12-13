@@ -22,8 +22,7 @@ const signup = asyncHandler(async (req, res, next) => {
         })
         const createdUser = await User.findById(user.id).select("-password,-refreshToken")
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(createdUser._id)
-        console.log(`Access token: ${accessToken} refresh token: ${refreshToken}`)
-
+        
         const options = {
             httpOnly: true, // prevent XSS attacks cross-site scripting attacks
             sameSite: "strict", // CSRF attacks cross site request forgery attacks
