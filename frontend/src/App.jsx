@@ -8,7 +8,7 @@ import ProfilePage from './pages/ProfilePage.jsx'
 import { Routes, Route } from'react-router-dom'
 const App = () =>{
   return (
-    <div>
+    <div className='w-full h-full'>
       {/* <Navbar/> */}
       <Routes>
         <Route path = '/' element ={<HomePage/>}/>
