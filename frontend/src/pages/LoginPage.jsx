@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { Link } from 'react'
 import introImg from '../assets/Intro.png'
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup'
+
+const validationSchema = Yup.object({
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().required('Password is required')
+});
+
 
 const LoginPage = () => {
     return (
         <div className='w-screen h-screen flex flex-1 justify-center items-center'>
             <div className='w-3/5 h-3/4 m-25 bg-slate-200 rounded-xl'>
                 <div className='flex flex-row w-full items-center justify-center p-2 h-full'>
-                    <div className ='w-3/5 h-full'>
+                    <div className='w-3/5 h-full'>
                         <img
                             alt="Intro"
                             src={introImg}
@@ -14,81 +22,41 @@ const LoginPage = () => {
                         />
                     </div>
                     <div className='w-2/5 h-full bg-white rounded-lg'>
-                        <div className="flex h-full flex-1 flex-col justify-center lg:px-8">
+                        <div className="flex h-full flex-1 flex-col pt-10 lg:px-8 border-2 border-black">
                             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                                 <img
                                     alt="Your Company"
                                     src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                                    className="mx-auto h-10 w-auto"
+                                    className="mx-auto h-6 w-auto"
                                 />
-                                <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+                                <h2 className="my-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
                                     Welcome back!
                                 </h2>
                             </div>
-
-                            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                                <form action="#" method="POST" className="space-y-6">
-                                    <div>
-                                        <div className="mt-2">
-                                            <input
-                                                id="email"
-                                                name="email"
-                                                type="email"
-                                                required
-                                                autoComplete="email"
-                                                placeholder='Email'
-                                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <div className="mt-2">
-                                            <input
-                                                id="password"
-                                                name="password"
-                                                type="password"
-                                                required
-                                                autoComplete="current-password"
-                                                placeholder='Password'
-                                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                            <div className="text-sm">
-                                                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                                    Forgot password?
-                                                </a>
-                                            </div>
-                                    </div>
-
-                                    <div>
-                                        <button
-                                            type="submit"
-                                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                        >
-                                            Sign in
-                                        </button>
-                                    </div>
-                                </form>
-                                <div>
-                                        <button
-                                            type="submit"
-                                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                        >
-                                           Google
-                                        </button>
-                                    </div>
-                                
-
-                                <p className="mt-10 text-center text-sm/6 text-gray-500">
-                                    Not a member?{' '}
-                                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                        Sign Up
-                                    </a>
-                                </p>
-                            </div>
+                            <Formik
+                                initialValues={{ email: '', password: '' }}
+                                validationSchema={validationSchema}
+                                onSubmit={(values) => {
+                                    console.log(values)
+                                }}
+                            >
+                                {({ errors, touched, handleSubmit }) => (
+                                    <Form onSubmit={handleSubmit} className='flex flex-col'>
+                                            <Field name="email">
+                                                {({ field }) => (
+                                                        <input {...field} type="email" placeholder='Email' className = 'text-md bg-white text-black placeholder:text-gray-600 placeholder:text-sm pb-2 pl-2 bg-transparent border-b-2 border-gray-700 my-4 focus:outline-none '/>
+                                                        // {errors.email && touched.email ? <FormErrorMessage>{errors.email}</FormErrorMessage> : null}
+                                                )}
+                                            </Field>
+                                            <Field name="password" >
+                                                {({ field }) => (
+                                                        <input {...field} type="password" placeholder='Password' className='text-md bg-white text-black placeholder:text-gray-600 placeholder:text-sm pb-2 pl-2 bg-transparent border-b-2 border-gray-700 my-4 focus:outline-none '/>
+                                                )}
+                                            </Field>
+                                            <button type='submit' className = 'bg-black color-white rounded-3xl py-2 font-bold text-sm text-white mt-3'>Log In</button>
+                                    </Form>
+                                )}
+                            </Formik >
                         </div>
                     </div>
                 </div>
@@ -99,3 +67,4 @@ const LoginPage = () => {
 }
 
 export default LoginPage
+
