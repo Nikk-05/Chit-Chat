@@ -4,11 +4,11 @@ import { asyncHandler } from '../utils/asyncHandler.utils.js'
 
 const verifyJwt = asyncHandler(async(req, res, next) =>{
     try{
-        const token = req.cookies.refreshToken || req.header("Authorization")?.replace("Bearer ", "")
+        const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
         if(!token){
             throw new Error("Not an authorized user")
         }
-        const decodeJwtToken = jwt.verify(token, process.env.REFRESH_TOKEN)
+        const decodeJwtToken = jwt.verify(token, process.env.ACCESS_TOKEN)
         const authorizedUser = await User.findById(decodeJwtToken?._id).select("-password -refreshToken")
         req.user = authorizedUser
         next();

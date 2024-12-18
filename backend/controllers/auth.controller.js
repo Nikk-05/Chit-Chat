@@ -22,7 +22,7 @@ const signup = asyncHandler(async (req, res, next) => {
         })
         const createdUser = await User.findById(user.id).select("-password,-refreshToken")
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(createdUser._id)
-        
+
         const options = {
             httpOnly: true, // prevent XSS attacks cross-site scripting attacks
             sameSite: "strict", // CSRF attacks cross site request forgery attacks
@@ -110,4 +110,45 @@ const updateProfile = asyncHandler(async (req, res, next) => {
 
 })
 
-export { signup, login, logout, updateProfile }
+const refreshAccessToken = asyncHandler(async (req, res, next) => {
+    const oldRefreshToken = req.cookies?.refreshToken || req.body.refreshToken
+    if (!oldRefreshToken) {
+        throw new APIError(401, "No refresh token available")
+    }
+    try {
+        const decodeJwtToken = jwt.verify(oldRefreshToken, process.env.REFRESH_TOKEN)
+        const user = await User.findById(decodeJwtToken?._id)
+        if (!user) {
+            throw new APIError(401, "User not found")
+        }
+        if (oldRefreshToken != user.refreshToken) {
+            throw new APIError(401, "Refresh token has expired")
+        }
+
+        const { accessToken, newRefreshToken } = await generateAccessAndRefreshToken(user._id)
+        const options = {
+            httpOnly: true,
+            sameSite: "strict",
+            secure: process.env.NODE_ENV !== 'development'
+        }
+
+        return res.status(200)
+            .cookie("refreshToken", newRefreshToken, options)
+            .json(new APIResponse(200, {accessToken: accessToken }, "User created successfully"))
+    }
+    catch (error) {
+        next(error)
+    }
+})
+
+const authUser = asyncHandler(async (req, res,next) => {
+    try{
+        const user = req.user
+        return res.status(200).json(new APIResponse(200, user, "User authenticated successfully"))
+    }
+    catch(error){
+        next(error)
+    }
+})
+
+export { signup, login, logout, updateProfile, refreshAccessToken, authUser}
