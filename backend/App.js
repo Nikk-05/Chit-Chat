@@ -7,9 +7,10 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials : true
-}))
+    origin: 'http://localhost:5173', // Allow requests only from the specified origin
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    // allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers explicitly (optional)
+}));
 
 app.use(express.json({
     limit: '1000kb'

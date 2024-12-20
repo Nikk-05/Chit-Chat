@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import axiosInstance from '../lib/axios'
+import axiosInstance from '../lib/axios.js'
 
 export const useAuthState = create((set) => ({
     authUser: null,
@@ -11,7 +11,7 @@ export const useAuthState = create((set) => ({
             set({ authUser: response.data })
         }
         catch (error) {
-            set({ authUser: response.data })
+            set({ authUser: null })
             console.error("Error in check-auth " , error)
         }
         finally {
