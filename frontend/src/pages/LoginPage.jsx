@@ -105,7 +105,7 @@ const LoginPage = () => {
                     <div className="mt-6">
                         <button
                             type="button"
-                            className="bg-slate-200 rounded-3xl py-2 font-bold text-sm text-black h-10 w-full"
+                            className="bg-slate-200 rounded-3xl py-2 font-bold text-sm text-black h-10 w-full shadow-md"
                         >
                             <span className='flex justify-center items-center text-center'>
                                 <img src={googleIcon} alt="Google" className='h-5 mr-5' />Log in with Google
