@@ -4,6 +4,9 @@ import googleIcon from '../assets/googleIcon.png';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { Link } from 'react-router-dom';
+import { useAuthState } from '../global/globalState';
+import { Loader2 } from 'lucide-react';
 
 const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -11,10 +14,12 @@ const validationSchema = Yup.object({
 });
 
 const LoginPage = () => {
+    
     const [showPassword, setShowPassword] = useState(false);
+    const { logInHandler, isLoggingIn } = useAuthState();
 
     return (
-        <div className="w-screen h-screen flex items-center justify-center p-4">
+        <div className="w-screen h-screen flex items-center justify-center p-4 bg-gray-950">
             <div className="flex flex-col-reverse lg:flex-row bg-white rounded-xl shadow-lg w-full max-w-6xl overflow-hidden">
                 {/* Left Image Section */}
                 <div className="hidden lg:flex lg:w-1/2">
@@ -42,7 +47,7 @@ const LoginPage = () => {
                         initialValues={{ email: '', password: '' }}
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            console.log(values);
+                           logInHandler(values)
                         }}
                     >
                         {({ errors, touched, handleSubmit }) => (
@@ -88,15 +93,20 @@ const LoginPage = () => {
 
                                 {/* Forgot Password Link */}
                                 <div className="text-right text-xs text-black mt-2 cursor-pointer hover:underline">
-                                    <a href="/forgot-password">Forgot Password?</a>
+                                    <Link to="/forgot-password">Forgot Password?</Link>
                                 </div>
 
                                 {/* Submit Button */}
                                 <button
                                     type="submit"
                                     className="bg-black color-white rounded-3xl py-2 font-bold text-sm text-white mt-3"
-                                >
-                                    Log In
+                                    disabled={isLoggingIn}
+                                >{
+                                    isLoggingIn ? (
+                                      <span className='flex justify-center items-center '>
+                                        <Loader2 className='size-5 animate-spin mx-2' /> Log In...
+                                      </span>) : "Log In"
+                                  }
                                 </button>
                             </Form>
                         )}
@@ -116,9 +126,9 @@ const LoginPage = () => {
                     <div className="mt-8 text-center">
                         <p className="text-xs text-gray-600">
                             Don't have an account?
-                            <a href="/signup" className="ml-2 text-sm font-semibold text-black hover:underline">
+                            <Link to="/signup" className="ml-2 text-sm font-semibold text-black hover:underline">
                                 Sign Up
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>

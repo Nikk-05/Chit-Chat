@@ -25,8 +25,11 @@ app.use(cookieParser())
 
 import authRoutes from "./routes/user.route.js"
 import chatRoutes from "./routes/chat.route.js"
+import { errorHandler } from './middlewares/errorHandler.middleware.js'
 
 app.use("/api/v1/auth",authRoutes)
 app.use("/api/v1/chat",chatRoutes)
+
+app.use(errorHandler)
 
 export {app}

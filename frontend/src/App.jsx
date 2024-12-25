@@ -8,10 +8,13 @@ import ProfilePage from './pages/ProfilePage.jsx'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthState } from './global/globalState.js'
 import {Loader} from 'lucide-react'
+import { ToastContainer } from'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthState()
 
   useEffect(() => {
+    // const storedUser = localStorage.getItem('accessToken')
     checkAuth();
   }, [checkAuth])
 
@@ -23,14 +26,14 @@ const App = () => {
     )
   }
   return (
-    <div className='w-full h-full'>
-      {/* <Navbar/> */}
+    <div>
+      <ToastContainer position='top-left' autoClose='3000' pauseOnHover='true' />
       <Routes>
         <Route path='/' element={authUser? <HomePage /> : <Navigate to= '/login'/>} />
-        <Route path='/signup' element={<SignUpPage />} />
-        <Route path='/login' element={<LoginPage />} />
+        <Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to = '/'/>} />
+        <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to = '/'/>} />
         <Route path='/settings' element={<SettingsPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/profile' element={authUser ? <ProfilePage /> : <Navigate to = '/login'/>} />
       </Routes>
     </div>
   )

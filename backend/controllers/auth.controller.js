@@ -13,7 +13,7 @@ const signup = asyncHandler(async (req, res, next) => {
         }
         const existingUser = await User.findOne({ email: email })
         if (existingUser) {
-            throw new APIError(400, "User with this email already exists")
+            throw new APIError(401, "User with this email already exists")
         }
         const user = await User.create({
             email: email,
@@ -58,9 +58,9 @@ const login = asyncHandler(async (req, res, next) => {
             sameSite: "strict",
             secure: process.env.NODE_ENV !== 'development'
         }
-        console.log()
         res.status(200)
             .cookie("refreshToken", refreshToken, options)
+            // .cookie("accessToken", accessToken, options)
             .json(new APIResponse(200, { User: loggedInUser, accessToken: accessToken }, "User Logged in successfully"))
     }
     catch (error) {
