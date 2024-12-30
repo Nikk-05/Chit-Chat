@@ -8,6 +8,7 @@ export const useAuthState = create((set) => ({
     isSigningUp: false,
     isLoggingIn: false,
     isLogout: false,
+    isUpdationProfilePicture: false,
 
     checkAuth: async () => {
         try {
@@ -15,7 +16,7 @@ export const useAuthState = create((set) => ({
             const accessToken = response.data.data.accessToken; // Extract access token
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
-            set({ authUser: response.data })
+            set({ authUser: response.data})
         }
         catch (error) {
             set({ authUser: null })
@@ -33,7 +34,7 @@ export const useAuthState = create((set) => ({
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
             toast.success("User signed up")
-            set({ authUser: response.data })
+            set({ authUser: response.data})
         }
         catch (error) {
             if (error.response) {
@@ -54,10 +55,11 @@ export const useAuthState = create((set) => ({
         try {
             const response = await axiosInstance.post('./auth/login', values)
             const accessToken = response.data.data.accessToken; // Extract access token
+            console.log(accessToken)
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
-            toast.success(`Welcome ${response.data.data.User.fullname}`)
-            set({ authUser: response.data.data.User })
+            toast.success(`Welcome User`)
+            set({ authUser: response.data})
         }
         catch (error) {
             if (error.response) {
@@ -92,5 +94,23 @@ export const useAuthState = create((set) => ({
             set({ isLogout: true })
             set({ authUser: null })
         }
+    },
+    updateProfilePictureHandler: async (file) => {
+        set({ isUpdationProfilePicture: true })
+        try {
+            const formData = new FormData()
+            formData.append('profilePic', file)
+            const response = await axiosInstance.post('/auth/update-profile', formData)
+            toast.success(response.data.message)
+            set({ authUser: response.data })
+        }
+        catch (error) {
+            toast.error(error.response.data.message)
+            console.error("Error in update-profile-picture ", error)
+        }
+        finally {
+            set({ isUpdationProfilePicture: false })
+        }
     }
+
 }))

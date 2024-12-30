@@ -61,7 +61,7 @@ const login = asyncHandler(async (req, res, next) => {
         res.status(200)
             .cookie("refreshToken", refreshToken, options)
             // .cookie("accessToken", accessToken, options)
-            .json(new APIResponse(200, { User: loggedInUser, accessToken: accessToken }, "User Logged in successfully"))
+            .json(new APIResponse(200, { user: loggedInUser, accessToken: accessToken }, "User Logged in successfully"))
     }
     catch (error) {
         next(error)
@@ -102,7 +102,7 @@ const updateProfile = asyncHandler(async (req, res, next) => {
             { new: true }).select("-password -refreshToken")
 
         return res.status(200)
-            .json(new APIResponse(200, uploadedProfilePicture, "Profile picture updated successfully"))
+            .json(new APIResponse(200, {user: uploadedProfilePicture}, "Profile picture updated successfully"))
     }
     catch (error) {
         next(error)
@@ -143,8 +143,16 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 
 const authUser = asyncHandler(async (req, res,next) => {
     try{
-        const user = req.user
-        return res.status(200).json(new APIResponse(200, user, "User authenticated successfully"))
+        const authorizedUser = req.user
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(authorizedUser._id)
+        const options = {
+            httpOnly: true,
+            sameSite: "strict",
+            secure: process.env.NODE_ENV !== 'development'
+        }
+        res.status(200)
+        .cookie("refreshToken", refreshToken, options)
+        .json(new APIResponse(200, { user: authorizedUser, accessToken: accessToken }, "User authenticated successfully"))
     }
     catch(error){
         next(error)

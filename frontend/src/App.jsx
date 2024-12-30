@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     // const storedUser = localStorage.getItem('accessToken')
-    checkAuth();
+    checkAuth()
   }, [checkAuth])
 
   if (isCheckingAuth && !authUser) {
@@ -25,8 +25,10 @@ const App = () => {
       </div>
     )
   }
+  console.log(authUser)
   return (
     <div>
+      {authUser ? (<Navbar />) : (<></>) }
       <ToastContainer position='top-left' autoClose='3000' pauseOnHover='true' />
       <Routes>
         <Route path='/' element={authUser? <HomePage /> : <Navigate to= '/login'/>} />

@@ -3,8 +3,7 @@ import Navbar from '../components/Navbar.jsx'
 
 const HomePage = () => {
   return (
-    <div className = 'w-screen h-screen'>
-    {<Navbar/>}
+    <div className = 'w-screen h-screen bg-gray-950'>
     <div>HomePage</div>
     </div>
   )
