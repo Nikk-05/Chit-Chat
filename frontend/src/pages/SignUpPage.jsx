@@ -4,7 +4,7 @@ import introImg from '../assets/Intro.png';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { LuEye, LuEyeClosed } from "react-icons/lu";
-import { useAuthState } from '../global/globalState.js'
+import { useAuthState } from '../global/useUserState.js'
 import { Loader2 } from 'lucide-react';
 
 const validationSchema = Yup.object({

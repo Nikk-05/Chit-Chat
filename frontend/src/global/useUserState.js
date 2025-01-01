@@ -16,7 +16,7 @@ export const useAuthState = create((set) => ({
             const accessToken = response.data.data.accessToken; // Extract access token
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
-            set({ authUser: response.data})
+            set({ authUser: response.data })
         }
         catch (error) {
             set({ authUser: null })
@@ -34,7 +34,7 @@ export const useAuthState = create((set) => ({
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
             toast.success("User signed up")
-            set({ authUser: response.data})
+            set({ authUser: response.data })
         }
         catch (error) {
             if (error.response) {
@@ -59,7 +59,7 @@ export const useAuthState = create((set) => ({
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
             toast.success(`Welcome User`)
-            set({ authUser: response.data})
+            set({ authUser: response.data })
         }
         catch (error) {
             if (error.response) {

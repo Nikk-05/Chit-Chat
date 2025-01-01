@@ -4,7 +4,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { LuMessageCircle } from 'react-icons/lu';
 import { FaCircleUser } from 'react-icons/fa6';
 import { Fragment } from 'react';
-import { useAuthState } from '../global/globalState.js';
+import { useAuthState } from '../global/useUserState.js';
 
 const Navbar = () => {
   const { authUser, logoutHandler } = useAuthState()
@@ -15,7 +15,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+    <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center sticky top-0">
       {/* Left Section: Logo and App Name */}
       <div className="flex items-center space-x-3">
         <LuMessageCircle className="text-indigo-600 text-2xl" />

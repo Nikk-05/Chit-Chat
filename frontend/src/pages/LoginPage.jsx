@@ -5,7 +5,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { Link } from 'react-router-dom';
-import { useAuthState } from '../global/globalState';
+import { useAuthState } from '../global/useUserState';
 import { Loader2 } from 'lucide-react';
 
 const validationSchema = Yup.object({

@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage.jsx'
 import SettingsPage from './pages/SettingsPage.jsx'
 import ProfilePage from './pages/ProfilePage.jsx'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuthState } from './global/globalState.js'
+import { useAuthState } from './global/useUserState.js'
 import {Loader} from 'lucide-react'
 import { ToastContainer } from'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
