@@ -13,7 +13,7 @@ export const useChatState = create((set) => ({
         set({ isUserLoading: true })
         try {
             const response = await axiosInstance.get('/chat/users')
-            console.log(response.data)
+            set({ users: response.data.data })
         }
         catch (error) {
             console.error(`During user loading ${error}`)

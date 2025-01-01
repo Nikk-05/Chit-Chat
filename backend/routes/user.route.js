@@ -5,10 +5,6 @@ import { uploader } from '../middlewares/multer.middlerware.js'
 
 const router = express.Router()
 
-router.get("/", (req, res) => {
-    res.send("Home route")
-})
-
 router.post("/signup", signup)
 router.post("/login", login)
 
