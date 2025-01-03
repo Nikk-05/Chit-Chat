@@ -15,7 +15,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+    <nav className="bg-white shadow-md py-2 px-6 flex justify-between items-center">
       {/* Left Section: Logo and App Name */}
       <div className="flex items-center space-x-3">
         <LuMessageCircle className="text-indigo-600 text-2xl" />
@@ -30,7 +30,7 @@ const Navbar = () => {
           >
             {authUser?.data.user ? (
               <img
-                className="h-10 w-10 object-cover rounded-full border-2 border-gray-300"
+                className="h-10 w-10 object-cover rounded-full border-4 border-green-400 max-w-100"
                 src={authUser?.data.user.profilePicture}
                 alt="Profile"
               />

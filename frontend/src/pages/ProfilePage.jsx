@@ -12,7 +12,6 @@ const ProfilePage = () => {
   const updateProfilePicture = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log(file)
       updateProfilePictureHandler(file)
     }
     else{

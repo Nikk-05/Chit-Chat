@@ -9,7 +9,7 @@ const HomePage = () => {
   const {selectedUser} = useChatState()
   console.log(selectedUser)
   return (
-    <div className = 'h-screen'>
+    <div>
       <div className = 'flex items-center justify-center pt-10 px-4'>
         <div className = 'bg-gray-600 rounded-lg shadow-cl w-full max-w-6xl h-[calc(100vh-8rem)]'>
           <div className = 'flex h-full rounded-lg overflow-hidden'>
