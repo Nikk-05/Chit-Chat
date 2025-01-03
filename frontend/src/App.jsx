@@ -10,7 +10,6 @@ import { useAuthState } from './global/useUserState.js'
 import {Loader} from 'lucide-react'
 import { ToastContainer } from'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import populateDB from './global/populateDB.js'
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthState()
 
