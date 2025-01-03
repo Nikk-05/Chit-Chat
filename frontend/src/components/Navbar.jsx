@@ -15,7 +15,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center sticky top-0">
+    <nav className="bg-white shadow-md py-4 px-6 flex justify-between items-center">
       {/* Left Section: Logo and App Name */}
       <div className="flex items-center space-x-3">
         <LuMessageCircle className="text-indigo-600 text-2xl" />
