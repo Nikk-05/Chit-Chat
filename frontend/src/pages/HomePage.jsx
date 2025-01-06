@@ -7,7 +7,6 @@ import ChatContainer from '../components/ChatContainer.jsx'
 
 const HomePage = () => {
   const {selectedUser} = useChatState()
-  console.log(selectedUser)
   return (
     <div>
       <div className = 'flex items-center justify-center pt-10 px-4'>

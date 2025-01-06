@@ -33,7 +33,6 @@ export const useAuthState = create((set) => ({
             const accessToken = response.data.data.accessToken; // Extract access token
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
-            toast.success("User signed up")
             set({ authUser: response.data })
         }
         catch (error) {
@@ -58,7 +57,6 @@ export const useAuthState = create((set) => ({
             console.log(accessToken)
             localStorage.setItem('access_token', accessToken); // Save securely
             axiosInstance.defaults.headers.Authorization = `Bearer ${accessToken}`;
-            toast.success(`Welcome User`)
             set({ authUser: response.data })
         }
         catch (error) {
@@ -83,7 +81,6 @@ export const useAuthState = create((set) => ({
             delete axiosInstance.defaults.headers.Authorization;
             set({ authUser: null })
             set({ isLogout: true })
-            toast.success(response.data.message)
         }
         catch (error) {
             toast.error(error.response.data.message)
@@ -101,7 +98,6 @@ export const useAuthState = create((set) => ({
             const formData = new FormData()
             formData.append('profilePic', file)
             const response = await axiosInstance.post('/auth/update-profile', formData)
-            toast.success(response.data.message)
             set({ authUser: response.data })
         }
         catch (error) {

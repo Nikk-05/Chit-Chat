@@ -14,7 +14,6 @@ const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthState()
 
   useEffect(() => {
-    // const storedUser = localStorage.getItem('accessToken')
     checkAuth()
   }, [checkAuth])
 

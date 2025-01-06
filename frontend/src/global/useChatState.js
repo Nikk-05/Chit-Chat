@@ -16,6 +16,7 @@ export const useChatState = create((set) => ({
             set({ users: response.data.data })
         }
         catch (error) {
+            toast.error("Something went wrong!")
             console.error(`During user loading ${error}`)
         }
         finally {
@@ -27,8 +28,7 @@ export const useChatState = create((set) => ({
         set({ isMessageLoading: true })
         try {
             const response = await axiosInstance.get(`/chat/${userId}`)
-            console.log(response.data)
-            console.log("get messages")
+            set({chats:response.data.data})
         }
         catch (error) {
             console.error(`During message loading ${error}`)
