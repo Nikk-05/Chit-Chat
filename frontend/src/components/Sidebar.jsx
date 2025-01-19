@@ -31,8 +31,8 @@ function Sidebar() {
               onClick={() => setSelectedUser(user)}
               className={`w-full p-3 flex items-center gap-3 rounded-lg transition-colors ${
                 selectedUser?._id === user._id
-                  ? "bg-gray-800 ring-2 ring-indigo-600" 
-                  : "hover:bg-gray-800"
+                  ? "bg-gray-800" 
+                  : "hover:bg-gray-600"
               }`}
             >
               {/* User Avatar */}

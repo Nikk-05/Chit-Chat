@@ -4,7 +4,6 @@ import { asyncHandler } from "../utils/asyncHandler.utils.js";
 import User from "../models/User.models.js";
 import Chat from "../models/Chat.models.js";
 import { uploadDataOnCloud } from "../utils/cloudinary.utils.js";
-import { response } from "express";
 
 const getUsers = asyncHandler(async (req, res, next) => {
     try {
@@ -26,7 +25,7 @@ const getUsers = asyncHandler(async (req, res, next) => {
 const getMessage = asyncHandler(async (req, res, next) => {
     try {
         const userToChat = req.params.id
-        const currentUser = req.user.id
+        const currentUser = req.user._id
         const messages = await Chat.find({
             $or: [
                 { senderId: currentUser, receiverId: userToChat },
@@ -45,27 +44,19 @@ const sendMessage = asyncHandler(async (req, res, next) => {
     try {
         const receiver = req.params.id
         const sender = req.user.id
-        const { message } = req.body
-        let sharedImage = [];
-        if (req.files && req.files.length > 0) {
-            const imageUploadPromises = req.files.map(async (file) => {
-                const result = await uploadDataOnCloud(file.path);
-                if (!result) {
-                    throw new APIError(400, "Failed to upload chat image on cloud");
-                }
-                return result.url; // Ensure you're returning the Cloudinary URL
-            });
-
-            // Wait for all uploads to complete
-            sharedImage = await Promise.all(imageUploadPromises);
+        const {message} = req.body
+        let imageURL = "";
+        if (req.file) {
+            const imageUploadPromises = await uploadDataOnCloud(req.file.path);
+            imageURL = imageUploadPromises.url;
         }
-
         const chatting = await Chat.create({
             senderId: sender,
             receiverId: receiver,
-            message,
-            images: sharedImage
+            message : message,
+            images: imageURL ? [imageURL] : []
         })
+
         if (!chatting) {
             throw new APIError(500, "Failed to store message on db")
         }

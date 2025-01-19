@@ -24,7 +24,6 @@ const App = () => {
       </div>
     )
   }
-  console.log(authUser)
   return (
     <div className ='h-screen'>
       {authUser ? (<Navbar />) : (<></>) }

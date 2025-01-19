@@ -24,11 +24,24 @@ export const useChatState = create((set) => ({
         }
     },
 
-    getMessages : async (userId) =>{
+    getMessages: async (userId) => {
         set({ isMessageLoading: true })
         try {
             const response = await axiosInstance.get(`/chat/${userId}`)
-            set({chats:response.data.data})
+            const values = response.data.data
+            const chatData = []
+            values.map((value) => {
+                chatData.push({
+                    _id: value._id,
+                    sender: value.senderId,
+                    receiver: value.receiverId,
+                    images: value.images,
+                    updatedAt: value.updatedAt,
+                    message: value.message,
+                    createdAt: value.createdAt
+                })
+            })
+            set({ chats: chatData })
         }
         catch (error) {
             console.error(`During message loading ${error}`)
@@ -38,22 +51,39 @@ export const useChatState = create((set) => ({
         }
     },
 
-    sendMessage: async (message, userId) => {
+    sendMessage: async (userId, message) => {
         set({ isMessageLoading: true })
         try {
-            const response = await axiosInstance.post(`/chat/${userId}`, { message })
-            console.log(response.data)
-            console.log("send message")
+            const formData = new FormData()
+            if (message.text) {
+                formData.append('message', message.text)
+            }
+            if (message.image) {
+                formData.append('images', message.image)
+            }
+            const response = await axiosInstance.post(`/chat/${userId}/send`, formData)
+            const values = response.data.data
+            const chatData = []
+            chatData.push({
+                _id: values._id,
+                sender: values.senderId,
+                receiver: values.receiverId,
+                images: values.images,
+                updatedAt: values.updatedAt,
+                message: values.message,
+                createdAt: values.createdAt
+            })
+            set({ chats: chatData })
         }
         catch (error) {
-            toast.error(error.response.data.message)
-            console.error(`Error during message sending ${error}`)
+            console.error(error)
         }
         finally {
             set({ isMessageLoading: false })
         }
     },
-    setSelectedUser: (user) =>{
-        set({selectedUser: user})
+
+    setSelectedUser: (user) => {
+        set({ selectedUser: user })
     }
 }))

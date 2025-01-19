@@ -11,6 +11,6 @@ router.route('/').get((req,res)=>{
 })
 router.route('/users').get(getUsers)
 router.route('/:id').get(getMessage)
-router.route('/:id/send').post(uploader.array('images',3),sendMessage)
+router.route('/:id/send').post(uploader.single("images"),sendMessage)
 
 export default router;
